@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Diagram & Signal Flow Graph Reduction Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Block Diagram & Signal Flow Graph Reduction Tool</h1>
+            <div class="header-buttons">
+                <button id="saveBtn" class="btn btn-success">💾 Save</button>
+                <button id="loadBtn" class="btn btn-info">📂 Load</button>
+                <button id="undoBtn" class="btn btn-secondary" title="Undo (Ctrl+Z)">↶ Undo</button>
+                <button id="redoBtn" class="btn btn-secondary" title="Redo (Ctrl+Y)">↷ Redo</button>
+                <button id="clearBtn" class="btn btn-secondary">🗑️ Clear</button>
+                <button id="reduceBtn" class="btn btn-primary">⚡ Reduce Graph</button>
+                <button id="exportBtn" class="btn btn-secondary">📤 Export</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Toolbar -->
+            <aside class="toolbar">
+                <div class="toolbar-header">
+                    <h3>Blocks</h3>
+                    <div class="toolbar-search">
+                        <input type="search" id="blockSearch" placeholder="Search blocks..." aria-label="Search blocks">
+                    </div>
+                </div>
+                <div class="toolbar-section">
+                    <h4>Basic Blocks</h4>
+                    <div class="block-item" data-type="gain" draggable="true">
+                        <div class="block-icon gain-block">G</div>
+                        <span>Gain</span>
+                    </div>
+                    <div class="block-item" data-type="summer" draggable="true">
+                        <div class="block-icon summer-block">Σ</div>
+                        <span>Summer</span>
+                    </div>
+                    <div class="block-item" data-type="integrator" draggable="true">
+                        <div class="block-icon integrator-block">1/s</div>
+                        <span>Integrator</span>
+                    </div>
+                    <div class="block-item" data-type="differentiator" draggable="true">
+                        <div class="block-icon differentiator-block">s</div>
+                        <span>Differentiator</span>
+                    </div>
+                </div>
+
+                <div class="toolbar-section">
+                    <h4>Signal Flow Graph</h4>
+                    <div class="block-item" data-type="node" draggable="true">
+                        <div class="block-icon node-block">●</div>
+                        <span>Node</span>
+                    </div>
+                    <div class="block-item" data-type="branch" draggable="true">
+                        <div class="block-icon branch-block">→</div>
+                        <span>Branch</span>
+                    </div>
+                </div>
+
+                <div class="toolbar-section">
+                    <h4>Input/Output</h4>
+                    <div class="block-item" data-type="input" draggable="true">
+                        <div class="block-icon input-block">In</div>
+                        <span>Input</span>
+                    </div>
+                    <div class="block-item" data-type="output" draggable="true">
+                        <div class="block-icon output-block">Out</div>
+                        <span>Output</span>
+                    </div>
+                </div>
+
+                <div class="toolbar-section templates-section">
+                    <h4>Diagram Templates</h4>
+                    <p class="section-hint">Load pre-built complex flows</p>
+                    <div class="template-cards" id="templateCards"></div>
+                </div>
+            </aside>
+
+            <!-- Canvas Workspace -->
+            <main class="workspace">
+                <div class="workspace-controls">
+                    <div class="zoom-controls">
+                        <button id="zoomIn" class="zoom-btn" title="Zoom In (Ctrl +)">+</button>
+                        <span id="zoomLevel">100%</span>
+                        <button id="zoomOut" class="zoom-btn" title="Zoom Out (Ctrl -)">-</button>
+                        <button id="zoomReset" class="zoom-btn" title="Reset Zoom">⌂</button>
+                    </div>
+                    <div class="view-controls">
+                        <button id="panBtn" class="view-btn" title="Pan Mode (Space)">✋ Pan</button>
+                        <button id="selectBtn" class="view-btn active" title="Select Mode">👆 Select</button>
+                    </div>
+                </div>
+                <div class="canvas-container" id="canvas-wrapper">
+                    <canvas id="canvas" width="1200" height="800"></canvas>
+                    <div id="blocks-container"></div>
+                </div>
+            </main>
+
+            <!-- Properties Panel -->
+            <aside class="properties-panel">
+                <h3>Properties</h3>
+                <div id="properties-content">
+                    <p class="placeholder">Select a block to edit properties</p>
+                </div>
+                <div class="diagram-insights" aria-live="polite">
+                    <div class="insights-header">
+                        <h4>Diagram Insights</h4>
+                        <span class="complexity-badge" id="complexityBadge">New</span>
+                    </div>
+                    <div class="insight-row">
+                        <span>Feedback loops</span>
+                        <strong id="feedbackCount">0</strong>
+                    </div>
+                    <div class="insight-row">
+                        <span>Max fan-out</span>
+                        <strong id="fanOut">0</strong>
+                    </div>
+                    <div class="insight-row">
+                        <span>Template status</span>
+                        <strong id="templateStatus">Custom</strong>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <span id="status-text">Ready</span>
+            <span id="coordinates">X: 0, Y: 0</span>
+            <span id="block-count">Blocks: 0</span>
+            <span id="connection-count">Connections: 0</span>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
